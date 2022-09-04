@@ -18,6 +18,7 @@ import cn.edu.buaa.crypto.encryption.abe.cpabe.hw14.OOCPABEHW14Engine;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.llw14.CPABELLW14Engine;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.llw16.OOCPABELLW16Engine;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.CPABERW13Engine;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.waters11.CPABEWATERS11Engine;
 import com.example.TestUtils;
 import com.example.access.AccessPolicyExamples;
 import it.unisa.dia.gas.jpbc.Element;
@@ -124,6 +125,8 @@ public class CPABEEngineJUnitTest extends TestCase {
 
         //Decryption
         Element anMessage = engine.decryption(publicKey, secretKey, accessPolicy, rhos, ciphertext);
+        System.out.printf("message:%s\n",message);
+        System.out.printf("anMessage:%s\n",anMessage);
         Assert.assertEquals(message, anMessage);
 
         //Encapsulation and serialization
@@ -181,14 +184,19 @@ public class CPABEEngineJUnitTest extends TestCase {
             // Setup and serialization
             PairingKeySerPair keyPair = engine.setup(pairingParameters, 50);
             PairingKeySerParameter publicKey = keyPair.getPublic();
+//            System.out.printf("publicKey:%s\n",publicKey);
             byte[] byteArrayPublicKey = TestUtils.SerCipherParameter(publicKey);
             CipherParameters anPublicKey = TestUtils.deserCipherParameters(byteArrayPublicKey);
+//            System.out.printf("anPublicKey:%s\n",anPublicKey);
             Assert.assertEquals(publicKey, anPublicKey);
             publicKey = (PairingKeySerParameter) anPublicKey;
 
             PairingKeySerParameter masterKey = keyPair.getPrivate();
+//            System.out.printf("masterKey:%s\n",masterKey);
             byte[] byteArrayMasterKey = TestUtils.SerCipherParameter(masterKey);
+//            System.out.printf("byteArrayMasterKey:%s\n",byteArrayMasterKey);
             CipherParameters anMasterKey = TestUtils.deserCipherParameters(byteArrayMasterKey);
+//            System.out.printf("anMasterKey:%s\n",anMasterKey);
             Assert.assertEquals(masterKey, anMasterKey);
             masterKey = (PairingKeySerParameter) anMasterKey;
 
@@ -389,7 +397,16 @@ public class CPABEEngineJUnitTest extends TestCase {
         engine.setAccessControlEngine(LSSSLW10Engine.getInstance());
         runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
+    public void testCPABEWATERS11Engine() {
+        this.engine = CPABEWATERS11Engine.getInstance();
+        System.out.println("Test " + engine.getEngineName() + " using " + AccessTreeEngine.SCHEME_NAME);
+        engine.setAccessControlEngine(AccessTreeEngine.getInstance());
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
 
+        System.out.println("Test " + engine.getEngineName() + " using " + LSSSLW10Engine.SCHEME_NAME);
+        engine.setAccessControlEngine(LSSSLW10Engine.getInstance());
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
     public void testCPABERW13Engine() {
         this.engine = CPABERW13Engine.getInstance();
         System.out.println("Test " + engine.getEngineName() + " using " + AccessTreeEngine.SCHEME_NAME);

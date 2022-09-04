@@ -14,8 +14,8 @@ public class TestUtils {
     public static final String TEST_PAIRING_PARAMETERS_PATH_a1_3_128 = "params/a1_3_128.properties";
 
     public static final int DEFAULT_SIMU_TEST_ROUND = 2;
-    public static final int DEFAULT_PRIME_ORDER_TEST_ROUND = 100;
-    public static final int DEFAULT_COMPOSITE_ORDER_TEST_ROUND = 20;
+    public static final int DEFAULT_PRIME_ORDER_TEST_ROUND = 30; //实验次数
+    public static final int DEFAULT_COMPOSITE_ORDER_TEST_ROUND = 20; //实验次数
 
     public static byte[] SerCipherParameter(CipherParameters cipherParameters) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
